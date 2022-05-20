@@ -63,16 +63,17 @@ const Home: NextPage<Props> = ({ binance, ftx, candlestick, orderBook }) => {
         <div>
           <span>Input USDT:</span>
           <input
-            className="mx-2 border-2 border-gray-400 rounded-md"
+            className="mx-2 border-2 border-gray-400 rounded-md px-2"
             onChange={(e) => setUsdtAmount(Number(e.target.value))}
-          />
+          />{" "}
+          USDT{" "}
           <button
             className="bg-gray-200 p-1 rounded-md"
             onClick={() => calculateOutputAmount("buy")}
           >
             Buy
           </button>
-          <p>Output BTC: 0.00</p>
+          <p>Output BTC: {btcAmount} BTC </p>
         </div>
       </div>
 
