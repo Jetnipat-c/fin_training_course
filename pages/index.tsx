@@ -12,6 +12,7 @@ interface Props {
 const Home: NextPage<Props> = ({ binance, ftx, candlestick, orderBook }) => {
   const [usdtAmount, setUsdtAmount] = useState<number>(0);
   const [btcAmount, setBtcAmount] = useState<number>(0);
+  const [totalBtc, setTotalBtc] = useState<number>(0);
   const price = {};
   candlestick.map((item) => {
     const result = {
@@ -32,10 +33,15 @@ const Home: NextPage<Props> = ({ binance, ftx, candlestick, orderBook }) => {
   const calculateOutputAmount = (type: string) => {
     let available = usdtAmount;
     let getBTC = 0;
+    let totalBtc = 0;
+    console.log(orderBook.bids.reduce((a, b) => a + Number(b[1]), 0));
+
     for (let i = 0; i < orderBook.bids.length; i++) {
       const item = orderBook.bids[i];
-      const price = item[0];
-      const amount = item[1];
+      const price = Number(item[0]);
+      const amount = Number(item[1]);
+
+      totalBtc += amount;
       const ratePrice = price * amount;
       if (ratePrice <= available && available > 0) {
         available = available - ratePrice;
@@ -48,6 +54,7 @@ const Home: NextPage<Props> = ({ binance, ftx, candlestick, orderBook }) => {
       }
     }
     setBtcAmount(getBTC);
+    setTotalBtc(totalBtc);
   };
   return (
     <div className="w-full">
@@ -74,6 +81,7 @@ const Home: NextPage<Props> = ({ binance, ftx, candlestick, orderBook }) => {
             Buy
           </button>
           <p>Output BTC: {btcAmount} BTC </p>
+          <p>Total btc in bids : {totalBtc}</p>
         </div>
       </div>
 
